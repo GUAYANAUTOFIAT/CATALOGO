@@ -4,289 +4,487 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo Oficial - Guayanauto C.A. Fiat</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        fiat: {
+                            dark: '#0a0a0a',
+                            card: '#161618',
+                            gray: '#a1a1aa'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.4s ease-out',
+                        'scale-up': 'scaleUp 0.3s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        scaleUp: {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts: Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        :root {
-            --primary-color: #fbe750; /* Por defecto amarillo (Enmanuel) */
-            --bg-dark: #121212;
-            --card-bg: #1e1e1e;
-            --text-main: #ffffff;
-            --text-muted: #b0b0b0;
-        }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            background-color: #050505;
+            color: #ffffff;
         }
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
-            border-bottom: 4px solid var(--primary-color);
+        
+        .glass-header {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        header h1 {
-            margin: 0;
-            font-size: 2.2rem;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            letter-spacing: 2px;
+
+        .glass-modal {
+            background: rgba(22, 22, 24, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        header p {
-            margin: 10px 0 0;
-            color: var(--text-muted);
-            font-size: 1.1rem;
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
         }
-        .search-container {
-            max-width: 600px;
-            margin: 25px auto 10px auto;
-            padding: 0 20px;
-        }
-        .search-container input {
-            width: 100%;
-            padding: 14px 20px;
-            font-size: 1rem;
-            border-radius: 30px;
-            border: 1px solid #333;
-            background-color: #1a1a1a;
-            color: #fff;
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--theme-color);
+            box-shadow: 0 0 15px var(--theme-glow);
             outline: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: border-color 0.3s;
         }
-        .search-container input:focus {
-            border-color: var(--primary-color);
+
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .container {
-            max-width: 1200px;
-            margin: 20px auto 40px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            flex: 1;
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
         }
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border: 1px solid #333;
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-color);
-        }
-        .card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background-color: #2c2c2c;
-        }
-        .card-content {
-            padding: 20px;
-            flex-grow: 1;
-        }
-        .card-content h3 {
-            margin-top: 0;
-            font-size: 1.5rem;
-            color: var(--text-main);
-        }
-        .price-tag {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin: 15px 0;
-        }
-        .price-sub {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            margin: 5px 0;
-            display: flex;
-            justify-content: space-between;
-        }
-        .btn-whatsapp {
-            display: block;
-            text-align: center;
-            background-color: var(--primary-color);
-            color: #121212;
-            font-weight: bold;
-            text-decoration: none;
-            padding: 12px;
-            margin: 0 20px 20px 20px;
-            border-radius: 8px;
-            transition: opacity 0.2s;
-        }
-        .btn-whatsapp:hover {
-            opacity: 0.9;
-        }
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            border-top: 1px solid #222;
-            background-color: #161616;
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--theme-color);
         }
     </style>
 </head>
-<body>
+<body class="antialiased min-h-screen flex flex-col relative">
 
-    <header>
-        <h1 id="dealer-title">Guayanauto C.A. Fiat</h1>
-        <p id="advisor-subtitle">Catálogo Oficial Autorizado</p>
+    <!-- Header Sticky -->
+    <header class="glass-header sticky top-0 z-40 w-full px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-6">
+        <div class="w-full sm:w-auto text-center sm:text-left">
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-widest uppercase">
+                Catálogo <span id="headerFiat" style="color: var(--theme-color);">FIAT</span>
+            </h1>
+            <p id="headerAsesor" class="text-sm sm:text-base text-fiat-gray tracking-widest uppercase font-bold mt-1">
+                Enmanuel Boutto <span class="text-white/30 mx-2">|</span> Guayanauto C.A.
+            </p>
+        </div>
+        
+        <!-- Buscador -->
+        <div class="w-full sm:w-96 relative group">
+            <i id="searchIcon" class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 transition-colors"></i>
+            <input type="text" id="searchInput" 
+                class="search-input w-full rounded-full py-3 pl-12 pr-4 text-sm font-medium" 
+                placeholder="Buscar modelo o categoría..." 
+                onkeyup="filtrarVehiculos()">
+        </div>
     </header>
 
-    <!-- Barra de búsqueda recuperada -->
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Buscar modelo de vehículo..." onkeyup="filtrarVehiculos()">
-    </div>
-
-    <div class="container" id="vehicle-list">
-        <!-- Argo Endurance -->
-        <div class="card" data-name="argo endurance">
-            <img src="argo_endurance.jpg" alt="Fiat Argo Endurance">
-            <div class="card-content">
-                <h3>Argo Endurance</h3>
-                <p class="price-sub">Sincrónico</p>
-                <div class="price-tag">$25.950</div>
-            </div>
-            <a href="#" class="btn-whatsapp" onclick="contactar('Argo Endurance')">Cotizar por WhatsApp</a>
+    <!-- Contenido Principal -->
+    <main class="flex-1 w-full max-w-7xl mx-auto px-6 py-10">
+        <div class="mb-10 text-center sm:text-left animate-fade-in">
+            <h2 class="text-3xl md:text-4xl font-extrabold mb-2">Descubre la Nueva Era <span id="mainFiat" style="color: var(--theme-color);">Fiat</span></h2>
+            <p class="text-fiat-gray text-sm md:text-base max-w-2xl">Explora nuestro line-up completo y haz clic en cualquier vehículo para ver sus precios, características y detalles técnicos.</p>
         </div>
 
-        <!-- Fiorino -->
-        <div class="card" data-name="fiorino">
-            <img src="fiorino.jpg" alt="Fiat Fiorino">
-            <div class="card-content">
-                <h3>Fiorino</h3>
-                <p class="price-sub">Sincrónico</p>
-                <div class="price-tag">$27.750</div>
-            </div>
-            <a href="#" class="btn-whatsapp" onclick="contactar('Fiorino')">Cotizar por WhatsApp</a>
-        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="catalogGrid"></div>
 
-        <!-- Argo Trekking -->
-        <div class="card" data-name="argo trekking">
-            <img src="argo_trekking.jpg" alt="Fiat Argo Trekking">
-            <div class="card-content">
-                <h3>Argo Trekking</h3>
-                <div class="price-sub"><span>Sincrónico:</span> <strong>$30.060</strong></div>
-                <div class="price-sub"><span>Automático:</span> <strong>$31.750</strong></div>
-            </div>
-            <a href="#" class="btn-whatsapp" onclick="contactar('Argo Trekking')">Cotizar por WhatsApp</a>
+        <div id="noResults" class="hidden text-center py-20 animate-fade-in">
+            <i class="fas fa-car-side text-6xl text-gray-800 mb-4"></i>
+            <h3 class="text-xl font-bold text-gray-400">No encontramos modelos con ese nombre</h3>
+            <p class="text-gray-500 mt-2">Intenta buscar por categoría como "SUV" o "Sedán"</p>
         </div>
+    </main>
 
-        <!-- Cronos -->
-        <div class="card" data-name="cronos">
-            <img src="cronos.jpg" alt="Fiat Cronos">
-            <div class="card-content">
-                <h3>Cronos</h3>
-                <div class="price-sub"><span>Sincrónico:</span> <strong>$31.870</strong></div>
-                <div class="price-sub"><span>Automático:</span> <strong>$33.870</strong></div>
-            </div>
-            <a href="#" class="btn-whatsapp" onclick="contactar('Cronos')">Cotizar por WhatsApp</a>
-        </div>
+    <!-- Modal de Vista Detallada -->
+    <div id="modalVehiculo" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-modal w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl relative animate-scale-up my-8">
+            <button onclick="cerrarModal()" class="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-black/60 border border-white/10 text-white transition-colors flex items-center justify-center hover:bg-white/20">
+                <i class="fas fa-times text-lg"></i>
+            </button>
 
-        <!-- Pulse -->
-        <div class="card" data-name="pulse">
-            <img src="pulse.jpg" alt="Fiat Pulse">
-            <div class="card-content">
-                <h3>Pulse</h3>
-                <div class="price-tag">$36.830</div>
+            <div class="relative h-64 sm:h-80 w-full overflow-hidden">
+                <img id="modalImg" src="" alt="" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#161618] via-transparent to-transparent"></div>
+                <span id="modalCategoria" class="absolute top-4 left-4 z-20 bg-black/60 backdrop-blur-sm border border-white/10 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full"></span>
             </div>
-            <a href="#" class="btn-whatsapp" onclick="contactar('Pulse')">Cotizar por WhatsApp</a>
-        </div>
 
-        <!-- Toro -->
-        <div class="card" data-name="toro">
-            <img src="toro.jpg" alt="Fiat Toro">
-            <div class="card-content">
-                <h3>Toro</h3>
-                <p class="price-sub">Automática</p>
-                <div class="price-tag">$43.860</div>
-            </div>
-            <a href="#" class="btn-whatsapp" onclick="contactar('Toro')">Cotizar por WhatsApp</a>
-        </div>
+            <div class="p-6 sm:p-8 -mt-6 relative z-10">
+                <h2 id="modalNombre" class="text-3xl sm:text-4xl font-extrabold text-white mb-2"></h2>
+                <div id="modalPrecioPrincipal" class="text-2xl font-bold mb-4" style="color: var(--theme-color);"></div>
+                <div id="modalPreciosSub" class="mb-4 space-y-2"></div>
+                <p id="modalDescripcion" class="text-fiat-gray text-sm sm:text-base leading-relaxed mb-6"></p>
 
-        <!-- Fastback Abarth -->
-        <div class="card" data-name="fastback abarth">
-            <img src="fastback_abarth.jpg" alt="Fiat Fastback Abarth">
-            <div class="card-content">
-                <h3>Fastback Abarth</h3>
-                <p class="price-sub">Automática</p>
-                <div class="price-tag">$46.485</div>
+                <div class="mb-8">
+                    <h3 class="text-xs uppercase tracking-widest font-extrabold mb-4" style="color: var(--theme-color);">Especificaciones Clave</h3>
+                    <div id="modalSpecs" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-white/10">
+                    <a id="modalWaBtn" href="#" target="_blank" class="w-full sm:flex-1 bg-[#25D366] hover:bg-[#20ba5a] text-black font-bold text-center py-3.5 rounded-xl transition-all shadow-lg shadow-[#25D366]/20 flex items-center justify-center gap-2">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                        Cotizar este Modelo por WhatsApp
+                    </a>
+                    <button onclick="cerrarModal()" class="w-full sm:w-auto px-6 py-3.5 bg-white/5 hover:bg-white/10 text-gray-300 font-semibold rounded-xl border border-white/10 transition-colors">
+                        Volver al Catálogo
+                    </button>
+                </div>
             </div>
-            <a href="#" class="btn-whatsapp" onclick="contactar('Fastback Abarth')">Cotizar por WhatsApp</a>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 Guayanauto C.A. - Todos los derechos reservados.</p>
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-8 text-center mt-auto bg-[#080808]">
+        <p id="footerAsesor" class="text-xs text-fiat-gray uppercase tracking-widest font-semibold">
+            &copy; 2026 Enmanuel Boutto <span class="mx-2" style="color: var(--theme-color);">|</span> Guayanauto C.A.
+        </p>
     </footer>
 
     <script>
-        // Configuración de asesores (Tú en amarillo, Rhay en verde, David en azul, Claret en fucsia)
+        // CONFIGURACIÓN DE ASESORES (Colores oficiales y teléfonos)
         const asesores = {
-            "enmanuel": {
+            enmanuel: {
                 nombre: "Enmanuel Boutto",
-                color: "#fbe750", // Amarillo
-                telefono: "584227466690"
+                telefono: "584227466690",
+                color: "#fbe750", // Amarillo oficial
+                glow: "rgba(251, 231, 80, 0.3)"
             },
-            "rhay": {
+            rhay: {
                 nombre: "Rhay Silva",
-                color: "#a4c30d", // Verde Lima
-                telefono: "584120000000" 
+                telefono: "584120000000",
+                color: "#a4c30d", // Verde oficial
+                glow: "rgba(164, 195, 13, 0.3)"
             },
-            "david": {
+            david: {
                 nombre: "David Colina",
-                color: "#38c6fd", // Azul Celeste
-                telefono: "584120000000" 
+                telefono: "584120000000",
+                color: "#38c6fd", // Azul celeste oficial
+                glow: "rgba(56, 198, 253, 0.3)"
             },
-            "claret": {
+            claret: {
                 nombre: "Claret Gómez",
-                color: "#fd4a78", // Fucsia
-                telefono: "584120000000" 
+                telefono: "584120000000",
+                color: "#fd4a78", // Fucsia oficial
+                glow: "rgba(253, 74, 120, 0.3)"
             }
         };
 
-        // Leer parámetro ?asesor= de la URL
+        // Capturar parámetro ?asesor= de la URL
         const urlParams = new URLSearchParams(window.location.search);
-        const asesorKey = urlParams.get('asesor') ? urlParams.get('asesor').toLowerCase() : 'enmanuel';
-        
-        const asesorActual = asesores[asesorKey] || asesores['enmanuel'];
+        const claveAsesor = (urlParams.get('asesor') || 'enmanuel').toLowerCase();
+        const asesorActual = asesores[claveAsesor] || asesores.enmanuel;
+        const numeroWhatsApp = asesorActual.telefono;
 
-        // Aplicar color corporativo dinámico
-        document.documentElement.style.setProperty('--primary-color', asesorActual.color);
-        document.getElementById('advisor-subtitle').innerText = "Asesor Comercial: " + asesorActual.nombre;
+        // Inyectar el color corporativo oficial del asesor en la página
+        document.documentElement.style.setProperty('--theme-color', asesorActual.color);
+        document.documentElement.style.setProperty('--theme-glow', asesorActual.glow);
 
-        // Función para filtrar vehículos con la barra de búsqueda
-        function filtrarVehiculos() {
-            const input = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.card');
+        document.addEventListener("DOMContentLoaded", () => {
+            const headerAsesor = document.getElementById("headerAsesor");
+            const footerAsesor = document.getElementById("footerAsesor");
 
-            cards.forEach(card => {
-                const name = card.getAttribute('data-name');
-                if (name.includes(input)) {
-                    card.style.display = "flex";
-                } else {
-                    card.style.display = "none";
+            if (headerAsesor) {
+                headerAsesor.innerHTML = `${asesorActual.nombre} <span class="text-white/30 mx-2">|</span> Guayanauto C.A.`;
+            }
+            if (footerAsesor) {
+                footerAsesor.innerHTML = `&copy; 2026 ${asesorActual.nombre} <span class="mx-2" style="color: var(--theme-color);">|</span> Guayanauto C.A.`;
+            }
+            renderizarCatalogo(vehiculos);
+        });
+
+        // Base de datos de vehículos con precios actualizados
+        const vehiculos = [
+            { 
+                nombre: "Argo Endurance", 
+                categoria: "Hatchback", 
+                img: "argo_endurance.jpg",
+                precioUnico: "$25.950",
+                subPrecios: null,
+                descripcion: "Robusto y resistente para el uso diario. Diseñado con una suspensión con mayor despeje para adaptarse a cualquier terreno.",
+                specs: [
+                    "Motor 1.3L Firefly 8V (Cadena de distribución)",
+                    "Protector inferior de cárter reforzado",
+                    "Dirección Eléctrica Progresiva",
+                    "Computadora de a bordo multifunción TFT"
+                ]
+            },
+            { 
+                nombre: "Fiorino", 
+                categoria: "Utilitario", 
+                img: "fiorino.jpg",
+                precioUnico: "$27.750",
+                subPrecios: null,
+                descripcion: "El utilitario líder del mercado. Incorpora el motor 1.3L Firefly a cadena de distribución para un mantenimiento óptimo y mayor durabilidad comercial.",
+                specs: [
+                    "Motor 1.3L Firefly 8V (Cadena de distribución)",
+                    "Capacidad de carga: 650 kg / 3.3 m³",
+                    "Control de Estabilidad (ESC) y Hill Holder",
+                    "Aire Acondicionado y Dirección Asistida"
+                ]
+            },
+            { 
+                nombre: "Argo Trekking", 
+                categoria: "Hatchback", 
+                img: "argo_trekking.jpg",
+                precioUnico: null,
+                subPrecios: [
+                    { version: "Sincrónico", precio: "$30.060" },
+                    { version: "Automático", precio: "$31.750" }
+                ],
+                descripcion: "La versión aventurera del Argo. Cuenta con suspensión elevada de 210 mm, barras de techo funcionales y acabado deportivo.",
+                specs: [
+                    "Motor 1.3L Firefly 8V (Cadena de distribución)",
+                    "Despeje del suelo elevado (210 mm)",
+                    "Central Multimedia Uconnect 7\" (CarPlay / Android Auto)",
+                    "Neumáticos All-Terrain de uso mixto"
+                ]
+            },
+            { 
+                nombre: "Cronos", 
+                categoria: "Sedán", 
+                img: "cronos.jpg",
+                precioUnico: null,
+                subPrecios: [
+                    { version: "Sincrónico", precio: "$31.870" },
+                    { version: "Automático", precio: "$33.870" }
+                ],
+                descripcion: "El sedán más vendido por su espacio, elegancia y un volumen de maletero referente en su clase.",
+                specs: [
+                    "Motor 1.3L Firefly 8V (Cadena de distribución)",
+                    "Maletero de 525 Litros de capacidad",
+                    "Monitoreo de Presión de Neumáticos (iTPMS)",
+                    "Central Multimedia Touch de 7\""
+                ]
+            },
+            { 
+                nombre: "Pulse", 
+                categoria: "SUV", 
+                img: "pulse.jpg",
+                precioUnico: "$36.830",
+                subPrecios: null,
+                descripcion: "La SUV compacta que destaca por su diseño moderno, alto equipamiento tecnológico y opciones de motorización eficiente.",
+                specs: [
+                    "Motor Turbo 200 / 1.3L Firefly",
+                    "Pantalla Flotante Touch HD de 10.1\"",
+                    "Asistencias avanzadas a la conducción (ADAS)",
+                    "Iluminación Full LED exterior"
+                ]
+            },
+            { 
+                nombre: "Toro", 
+                categoria: "Pickup", 
+                img: "toro.jpg",
+                precioUnico: "$43.860",
+                subPrecios: [
+                    { version: "Automática", precio: "$43.860" }
+                ],
+                descripcion: "La pickup SUP (Sport Utility Pickup) que combina la capacidad de trabajo de una camioneta con el confort de una SUV premium.",
+                specs: [
+                    "Motor Turbo 270 con Caja Automática de 6 velocidades",
+                    "Capacidad de carga útil hasta 670 kg",
+                    "Central Multimedia Vertical con Apple CarPlay / Android Auto",
+                    "Caja de carga con portón de apertura lateral doble"
+                ]
+            },
+            { 
+                nombre: "Fastback Abarth", 
+                categoria: "Deportivo", 
+                img: "fastback_abarth.jpg",
+                precioUnico: "$46.485",
+                subPrecios: [
+                    { version: "Automática", precio: "$46.485" }
+                ],
+                descripcion: "El SUV Coupé de alto rendimiento puesto a punto por el escorpión de Abarth. Máxima potencia y deportividad pura.",
+                specs: [
+                    "Motor Turbo 270 de 185 HP",
+                    "Aceleración 0 a 100 km/h en 7.6 s",
+                    "Modo de conducción 'Poison' Abarth",
+                    "Doble escape deportivo y calibración rígida"
+                ]
+            }
+        ];
+
+        const catalogGrid = document.getElementById('catalogGrid');
+        const noResults = document.getElementById('noResults');
+
+        const modalVehiculo = document.getElementById('modalVehiculo');
+        const modalImg = document.getElementById('modalImg');
+        const modalCategoria = document.getElementById('modalCategoria');
+        const modalNombre = document.getElementById('modalNombre');
+        const modalPrecioPrincipal = document.getElementById('modalPrecioPrincipal');
+        const modalPreciosSub = document.getElementById('modalPreciosSub');
+        const modalDescripcion = document.getElementById('modalDescripcion');
+        const modalSpecs = document.getElementById('modalSpecs');
+        const modalWaBtn = document.getElementById('modalWaBtn');
+
+        function renderizarCatalogo(lista) {
+            catalogGrid.innerHTML = '';
+            
+            if (lista.length === 0) {
+                catalogGrid.style.display = 'none';
+                noResults.classList.remove('hidden');
+                return;
+            }
+            
+            catalogGrid.style.display = 'grid';
+            noResults.classList.add('hidden');
+            
+            lista.forEach((vehiculo, index) => {
+                const originalIndex = vehiculos.findIndex(v => v.nombre === vehiculo.nombre);
+                const mensaje = `¡Hola ${asesorActual.nombre}! Estoy interesado en recibir más información y cotización del Fiat ${vehiculo.nombre} que vi en el catálogo digital de Guayanauto C.A.`;
+                const urlWa = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+                const animDelay = index * 0.05;
+
+                // Generar HTML de precios para la tarjeta
+                let htmlPrecio = '';
+                if (vehiculo.precioUnico) {
+                    htmlPrecio = `<div class="text-xl font-bold mt-2" style="color: var(--theme-color);">${vehiculo.precioUnico}</div>`;
+                } else if (vehiculo.subPrecios) {
+                    htmlPrecio = '<div class="mt-2 space-y-1">';
+                    vehiculo.subPrecios.forEach(sub => {
+                        htmlPrecio += `<div class="text-sm text-gray-300 flex justify-between"><span>${sub.version}:</span> <strong style="color: var(--theme-color);">${sub.precio}</strong></div>`;
+                    });
+                    htmlPrecio += '</div>';
                 }
+
+                const cardHTML = `
+                    <div onclick="abrirModal(${originalIndex})" class="group bg-fiat-card rounded-2xl overflow-hidden border border-white/5 hover:border-[var(--theme-color)] transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[var(--theme-glow)] animate-fade-in flex flex-col cursor-pointer" style="animation-delay: ${animDelay}s; animation-fill-mode: both;" data-name="${vehiculo.nombre.toLowerCase()}">
+                        
+                        <div class="relative h-52 overflow-hidden bg-[#222]">
+                            <div class="absolute inset-0 bg-gradient-to-t from-fiat-card via-transparent to-transparent z-10"></div>
+                            
+                            <div class="absolute top-4 left-4 z-20">
+                                <span class="bg-black/60 backdrop-blur-sm border border-white/10 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                                    ${vehiculo.categoria}
+                                </span>
+                            </div>
+
+                            <img src="${vehiculo.img}" alt="${vehiculo.nombre}" 
+                                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
+                                onerror="this.src='https://placehold.co/600x400/1a1a1a/ffffff?text=Fiat+${encodeURIComponent(vehiculo.nombre)}'">
+                            
+                            <div class="absolute inset-0 bg-black/40 z-15 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <span class="text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg flex items-center gap-2" style="background-color: var(--theme-color); color: #000;">
+                                    <i class="fas fa-eye"></i> Ver Detalles
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="p-5 flex flex-col flex-grow justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-1 group-hover:text-[var(--theme-color)] transition-colors">${vehiculo.nombre}</h3>
+                                ${htmlPrecio}
+                            </div>
+                            
+                            <a href="${urlWa}" target="_blank" onclick="event.stopPropagation()" class="mt-5 block w-full bg-[#1b1b1f] hover:bg-[#25D366] border border-white/10 hover:border-[#25D366] text-white hover:text-black font-semibold text-sm text-center py-2.5 rounded-xl transition-all duration-300 shadow-lg flex items-center justify-center gap-2 group/btn">
+                                <i class="fab fa-whatsapp text-lg text-[#25D366] group-hover/btn:text-black transition-colors"></i>
+                                Cotizar por WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                `;
+                catalogGrid.insertAdjacentHTML('beforeend', cardHTML);
             });
         }
 
-        // Función para conectar el botón con el WhatsApp del asesor correspondiente
-        function contactar(vehiculo) {
-            const mensaje = `¡Hola ${asesorActual.nombre}! Estoy interesado en recibir más información y cotización del Fiat ${vehiculo} que vi en el catálogo digital de Guayanauto C.A.`;
-            const urlWp = `https://wa.me/${asesorActual.telefono}?text=${encodeURIComponent(mensaje)}`;
-            window.open(urlWp, '_blank');
+        function filtrarVehiculos() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const filtrados = vehiculos.filter(v => 
+                v.nombre.toLowerCase().includes(query) || 
+                v.categoria.toLowerCase().includes(query)
+            );
+            renderizarCatalogo(filtrados);
         }
+
+        function abrirModal(index) {
+            const v = vehiculos[index];
+            modalImg.src = v.img;
+            modalImg.onerror = () => { modalImg.src = 'https://placehold.co/600x400/1a1a1a/ffffff?text=Fiat+Vehículo'; };
+            modalCategoria.textContent = v.categoria;
+            modalNombre.textContent = v.nombre;
+            modalDescripcion.textContent = v.descripcion;
+
+            // Precios en Modal
+            if (v.precioUnico) {
+                modalPrecioPrincipal.textContent = v.precioUnico;
+                modalPrecioPrincipal.style.display = 'block';
+                modalPreciosSub.innerHTML = '';
+            } else {
+                modalPrecioPrincipal.style.display = 'none';
+                let subHtml = '';
+                v.subPrecios.forEach(sub => {
+                    subHtml += `<div class="text-base text-gray-300 flex justify-between bg-white/5 px-4 py-2 rounded-lg"><span>${sub.version}:</span> <strong style="color: var(--theme-color);">${sub.precio}</strong></div>`;
+                });
+                modalPreciosSub.innerHTML = subHtml;
+            }
+
+            // Especificaciones
+            modalSpecs.innerHTML = '';
+            v.specs.forEach(spec => {
+                modalSpecs.innerHTML += `
+                    <div class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/5">
+                        <i class="fas fa-check-circle text-sm" style="color: var(--theme-color);"></i>
+                        <span class="text-sm text-gray-300">${spec}</span>
+                    </div>
+                `;
+            });
+
+            // Enlace de WhatsApp para el modal
+            const mensaje = `¡Hola ${asesorActual.nombre}! Estoy interesado en recibir más información y cotización del Fiat ${v.nombre} que vi en el catálogo digital de Guayanauto C.A.`;
+            modalWaBtn.href = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+
+            modalVehiculo.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function cerrarModal() {
+            modalVehiculo.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Cerrar modal con tecla Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') cerrarModal();
+        });
     </script>
 </body>
 </html>
