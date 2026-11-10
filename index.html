@@ -13,6 +13,7 @@
                 extend: {
                     colors: {
                         fiat: {
+                            red: '#cc0000',
                             dark: '#0a0a0a',
                             card: '#161618',
                             gray: '#a1a1aa'
@@ -138,7 +139,7 @@
     <!-- Modal de Vista Detallada -->
     <div id="modalVehiculo" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
         <div class="glass-modal w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl relative animate-scale-up my-8">
-            <button onclick="cerrarModal()" class="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-black/60 border border-white/10 text-white transition-colors flex items-center justify-center hover:bg-white/20">
+            <button onclick="cerrarModal()" class="close-modal-btn absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-black/60 border border-white/10 text-white transition-colors flex items-center justify-center hover:bg-white/20">
                 <i class="fas fa-times text-lg"></i>
             </button>
 
@@ -150,19 +151,22 @@
 
             <div class="p-6 sm:p-8 -mt-6 relative z-10">
                 <h2 id="modalNombre" class="text-3xl sm:text-4xl font-extrabold text-white mb-2"></h2>
-                <div id="modalPrecioPrincipal" class="text-2xl font-bold mb-4" style="color: var(--theme-color);"></div>
+                
+                <!-- Precios en el Modal -->
+                <div id="modalPrecioPrincipal" class="text-2xl font-extrabold mb-4" style="color: var(--theme-color);"></div>
                 <div id="modalPreciosSub" class="mb-4 space-y-2"></div>
+
                 <p id="modalDescripcion" class="text-fiat-gray text-sm sm:text-base leading-relaxed mb-6"></p>
 
                 <div class="mb-8">
-                    <h3 class="text-xs uppercase tracking-widest font-extrabold mb-4" style="color: var(--theme-color);">Especificaciones Clave</h3>
+                    <h3 class="modal-spec-title text-xs uppercase tracking-widest font-extrabold mb-4" style="color: var(--theme-color);">Especificaciones Clave</h3>
                     <div id="modalSpecs" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-white/10">
                     <a id="modalWaBtn" href="#" target="_blank" class="w-full sm:flex-1 bg-[#25D366] hover:bg-[#20ba5a] text-black font-bold text-center py-3.5 rounded-xl transition-all shadow-lg shadow-[#25D366]/20 flex items-center justify-center gap-2">
                         <i class="fab fa-whatsapp text-xl"></i>
-                        Cotizar este Modelo por WhatsApp
+                        Solicitar Cotización de este Modelo
                     </a>
                     <button onclick="cerrarModal()" class="w-full sm:w-auto px-6 py-3.5 bg-white/5 hover:bg-white/10 text-gray-300 font-semibold rounded-xl border border-white/10 transition-colors">
                         Volver al Catálogo
@@ -180,7 +184,7 @@
     </footer>
 
     <script>
-        // CONFIGURACIÓN DE ASESORES (Colores oficiales y teléfonos)
+        // CONFIGURACIÓN DE ASESORES (Colores y teléfonos actualizados)
         const asesores = {
             enmanuel: {
                 nombre: "Enmanuel Boutto",
@@ -231,7 +235,7 @@
             renderizarCatalogo(vehiculos);
         });
 
-        // Base de datos de vehículos con precios actualizados
+        // Base de datos de vehículos con precios y estructura intacta
         const vehiculos = [
             { 
                 nombre: "Argo Endurance", 
@@ -310,35 +314,31 @@
                 ]
             },
             { 
-                nombre: "Toro", 
-                categoria: "Pickup", 
-                img: "toro.jpg",
-                precioUnico: "$43.860",
-                subPrecios: [
-                    { version: "Automática", precio: "$43.860" }
-                ],
-                descripcion: "La pickup SUP (Sport Utility Pickup) que combina la capacidad de trabajo de una camioneta con el confort de una SUV premium.",
-                specs: [
-                    "Motor Turbo 270 con Caja Automática de 6 velocidades",
-                    "Capacidad de carga útil hasta 670 kg",
-                    "Central Multimedia Vertical con Apple CarPlay / Android Auto",
-                    "Caja de carga con portón de apertura lateral doble"
-                ]
-            },
-            { 
                 nombre: "Fastback Abarth", 
                 categoria: "Deportivo", 
                 img: "fastback_abarth.jpg",
                 precioUnico: "$46.485",
-                subPrecios: [
-                    { version: "Automática", precio: "$46.485" }
-                ],
+                subPrecios: null,
                 descripcion: "El SUV Coupé de alto rendimiento puesto a punto por el escorpión de Abarth. Máxima potencia y deportividad pura.",
                 specs: [
                     "Motor Turbo 270 de 185 HP",
                     "Aceleración 0 a 100 km/h en 7.6 s",
                     "Modo de conducción 'Poison' Abarth",
                     "Doble escape deportivo y calibración rígida"
+                ]
+            },
+            { 
+                nombre: "Toro Freedom", 
+                categoria: "Pickup", 
+                img: "toro-freedom.jpg",
+                precioUnico: "$43.860",
+                subPrecios: null,
+                descripcion: "La pickup SUP (Sport Utility Pickup) que combina la capacidad de trabajo de una camioneta con el confort de una SUV premium.",
+                specs: [
+                    "Motor Turbo 270 Flex/Nafta con Caja Automática de 6 velocidades",
+                    "Capacidad de carga útil hasta 670 kg",
+                    "Central Multimedia Vertical con Apple CarPlay / Android Auto inalámbrico",
+                    "Caja de carga con portón de apertura lateral doble"
                 ]
             }
         ];
@@ -374,14 +374,14 @@
                 const urlWa = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
                 const animDelay = index * 0.05;
 
-                // Generar HTML de precios para la tarjeta
+                // Renderizado dinámico de precios en la tarjeta
                 let htmlPrecio = '';
                 if (vehiculo.precioUnico) {
-                    htmlPrecio = `<div class="text-xl font-bold mt-2" style="color: var(--theme-color);">${vehiculo.precioUnico}</div>`;
+                    htmlPrecio = `<div class="text-xl font-extrabold mt-2 mb-3" style="color: var(--theme-color);">${vehiculo.precioUnico}</div>`;
                 } else if (vehiculo.subPrecios) {
-                    htmlPrecio = '<div class="mt-2 space-y-1">';
+                    htmlPrecio = '<div class="mt-2 mb-3 space-y-1">';
                     vehiculo.subPrecios.forEach(sub => {
-                        htmlPrecio += `<div class="text-sm text-gray-300 flex justify-between"><span>${sub.version}:</span> <strong style="color: var(--theme-color);">${sub.precio}</strong></div>`;
+                        htmlPrecio += `<div class="text-xs sm:text-sm text-gray-300 flex justify-between"><span>${sub.version}:</span> <strong style="color: var(--theme-color);">${sub.precio}</strong></div>`;
                     });
                     htmlPrecio += '</div>';
                 }
@@ -389,7 +389,7 @@
                 const cardHTML = `
                     <div onclick="abrirModal(${originalIndex})" class="group bg-fiat-card rounded-2xl overflow-hidden border border-white/5 hover:border-[var(--theme-color)] transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[var(--theme-glow)] animate-fade-in flex flex-col cursor-pointer" style="animation-delay: ${animDelay}s; animation-fill-mode: both;" data-name="${vehiculo.nombre.toLowerCase()}">
                         
-                        <div class="relative h-52 overflow-hidden bg-[#222]">
+                        <div class="relative h-56 overflow-hidden bg-[#222]">
                             <div class="absolute inset-0 bg-gradient-to-t from-fiat-card via-transparent to-transparent z-10"></div>
                             
                             <div class="absolute top-4 left-4 z-20">
@@ -403,36 +403,29 @@
                                 onerror="this.src='https://placehold.co/600x400/1a1a1a/ffffff?text=Fiat+${encodeURIComponent(vehiculo.nombre)}'">
                             
                             <div class="absolute inset-0 bg-black/40 z-15 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <span class="text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg flex items-center gap-2" style="background-color: var(--theme-color); color: #000;">
+                                <span class="text-black text-xs font-bold px-4 py-2 rounded-full shadow-lg flex items-center gap-2" style="background-color: var(--theme-color);">
                                     <i class="fas fa-eye"></i> Ver Detalles
                                 </span>
                             </div>
                         </div>
                         
-                        <div class="p-5 flex flex-col flex-grow justify-between">
+                        <div class="p-5 flex flex-col flex-grow justify-between relative z-20 -mt-6">
                             <div>
                                 <h3 class="text-xl font-bold text-white mb-1 group-hover:text-[var(--theme-color)] transition-colors">${vehiculo.nombre}</h3>
                                 ${htmlPrecio}
                             </div>
                             
-                            <a href="${urlWa}" target="_blank" onclick="event.stopPropagation()" class="mt-5 block w-full bg-[#1b1b1f] hover:bg-[#25D366] border border-white/10 hover:border-[#25D366] text-white hover:text-black font-semibold text-sm text-center py-2.5 rounded-xl transition-all duration-300 shadow-lg flex items-center justify-center gap-2 group/btn">
+                            <div class="w-10 h-0.5 mb-4 group-hover:w-full transition-all duration-300" style="background-color: var(--theme-color);"></div>
+                            
+                            <a href="${urlWa}" target="_blank" onclick="event.stopPropagation()" class="mt-auto block w-full bg-[#1b1b1f] hover:bg-[#25D366] border border-white/10 hover:border-[#25D366] text-white hover:text-black font-semibold text-sm text-center py-3 rounded-xl transition-all duration-300 shadow-lg flex items-center justify-center gap-2 group/btn">
                                 <i class="fab fa-whatsapp text-lg text-[#25D366] group-hover/btn:text-black transition-colors"></i>
-                                Cotizar por WhatsApp
+                                Solicitar Cotización
                             </a>
                         </div>
                     </div>
                 `;
                 catalogGrid.insertAdjacentHTML('beforeend', cardHTML);
             });
-        }
-
-        function filtrarVehiculos() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            const filtrados = vehiculos.filter(v => 
-                v.nombre.toLowerCase().includes(query) || 
-                v.categoria.toLowerCase().includes(query)
-            );
-            renderizarCatalogo(filtrados);
         }
 
         function abrirModal(index) {
@@ -443,7 +436,7 @@
             modalNombre.textContent = v.nombre;
             modalDescripcion.textContent = v.descripcion;
 
-            // Precios en Modal
+            // Precios en el Modal
             if (v.precioUnico) {
                 modalPrecioPrincipal.textContent = v.precioUnico;
                 modalPrecioPrincipal.style.display = 'block';
@@ -452,24 +445,19 @@
                 modalPrecioPrincipal.style.display = 'none';
                 let subHtml = '';
                 v.subPrecios.forEach(sub => {
-                    subHtml += `<div class="text-base text-gray-300 flex justify-between bg-white/5 px-4 py-2 rounded-lg"><span>${sub.version}:</span> <strong style="color: var(--theme-color);">${sub.precio}</strong></div>`;
+                    subHtml += `<div class="text-base text-gray-300 flex justify-between bg-white/5 px-4 py-2 rounded-lg border border-white/5"><span>${sub.version}:</span> <strong style="color: var(--theme-color);">${sub.precio}</strong></div>`;
                 });
                 modalPreciosSub.innerHTML = subHtml;
             }
 
-            // Especificaciones
-            modalSpecs.innerHTML = '';
-            v.specs.forEach(spec => {
-                modalSpecs.innerHTML += `
-                    <div class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/5">
-                        <i class="fas fa-check-circle text-sm" style="color: var(--theme-color);"></i>
-                        <span class="text-sm text-gray-300">${spec}</span>
-                    </div>
-                `;
-            });
+            modalSpecs.innerHTML = v.specs.map(spec => `
+                <div class="flex items-center gap-3 bg-black/40 border border-white/5 p-3 rounded-xl">
+                    <i class="fas fa-check-circle text-sm" style="color: var(--theme-color);"></i>
+                    <span class="text-xs sm:text-sm text-gray-200 font-medium">${spec}</span>
+                </div>
+            `).join('');
 
-            // Enlace de WhatsApp para el modal
-            const mensaje = `¡Hola ${asesorActual.nombre}! Estoy interesado en recibir más información y cotización del Fiat ${v.nombre} que vi en el catálogo digital de Guayanauto C.A.`;
+            const mensaje = `¡Hola ${asesorActual.nombre}! Estuve revisando la ficha técnica del ${v.nombre} en tu catálogo y me gustaría recibir una cotización.`;
             modalWaBtn.href = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
 
             modalVehiculo.classList.remove('hidden');
@@ -481,10 +469,20 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Cerrar modal con tecla Escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') cerrarModal();
+        modalVehiculo.addEventListener('click', (e) => {
+            if (e.target === modalVehiculo) {
+                cerrarModal();
+            }
         });
+
+        function filtrarVehiculos() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const filtrados = vehiculos.filter(v => 
+                v.nombre.toLowerCase().includes(query) || 
+                v.categoria.toLowerCase().includes(query)
+            );
+            renderizarCatalogo(filtrados);
+        }
     </script>
 </body>
 </html>
